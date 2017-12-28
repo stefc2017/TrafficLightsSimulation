@@ -1,3 +1,5 @@
+package main.java;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -60,20 +62,15 @@ public class Simulation extends JPanel {
 
     @Override
     public void paint(Graphics graphic) {
+        System.out.println(timeLeft + "time left2s");
         super.paint(graphic);
         Graphics2D graphic2d = (Graphics2D) graphic;
         graphic2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         drawTrafficLight(graphic2d);
-
-        //traffic light for walking (crossing the street)
-        graphic2d.drawRect(500, 50, 400, 700);
-        //picture that says to cross or stop
-        graphic2d.drawRect(575, 110, 250, 250);
-        //timer
-        graphic2d.drawRect(575, 440, 250, 250);
-
+        drawCrossingTrafficLight(graphic2d);
         drawActiveLight(graphic2d);
+        reduceTime();
     }
 
     private void drawActiveLight(Graphics2D graphic){
@@ -92,10 +89,6 @@ public class Simulation extends JPanel {
     }
 
     private void drawTrafficLight(Graphics2D graphic){
-        graphic.setColor(Color.black);
-        //traffic light
-        graphic.drawRect(50, 50, 400, 700);
-
         graphic.setColor(new Color(231, 180, 22));
         //color in traffic light
         graphic.fillRect(50, 50, 400, 700);
@@ -107,5 +100,45 @@ public class Simulation extends JPanel {
         graphic.fillOval(175, 325, 150, 150);
         //green traffic light
         graphic.fillOval(175, 550, 150, 150);
+    }
+
+    private void drawCrossingTrafficLight(Graphics2D graphic){
+        //traffic light for walking (crossing the street)
+        graphic.fillRect(500, 50, 400, 700);
+
+        graphic.setColor(Color.gray);
+        //picture that says to cross or stop
+        graphic.fillRect(575, 110, 250, 250);
+        //timer
+        graphic.fillRect(575, 440, 250, 250);
+        //drawPedestrianLightSignal(graphic);
+        drawTimeLeft(graphic);
+    }
+
+    private void drawTimeLeft(Graphics2D graphic){
+        int xcoordinate = 610;
+        int ycoordinate = 610;
+
+        graphic.setColor(Color.red);
+        graphic.setFont(new Font("TimesRoman", Font.PLAIN, 150));
+
+        if(timeBelowTenSeconds()){
+            xcoordinate = 695;
+        }
+
+        System.out.println(timeLeft + "time left");
+        graphic.drawString(timeLeft + "",xcoordinate, ycoordinate);
+    }
+
+    private boolean timeBelowTenSeconds(){
+        return (timeLeft - 10 < 0);
+    }
+
+    private void drawPedestrianLightSignal(Graphics2D graphic){
+        ImageIcon icon = new ImageIcon(this.getClass()
+                .getResource("../images/walkingGuy.png"));
+        int x = 100;
+        int y = 100;
+        icon.paintIcon(this, graphic, x, y);
     }
 }

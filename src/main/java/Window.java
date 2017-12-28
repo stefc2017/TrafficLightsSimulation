@@ -1,4 +1,4 @@
-/**
+package main.java; /**
  * Created by Stefan on 2017-12-20.
  */
 import javax.swing.*;
@@ -6,7 +6,7 @@ import javax.swing.*;
 public class Window{
 
     public Window() throws InterruptedException {
-        JFrame myFrame = new JFrame("Traffic Lights Simulation");
+        JFrame myFrame = new JFrame("Traffic Lights main.java.Simulation");
         Simulation simulation = new Simulation();
         myFrame.add(simulation);
         myFrame.setSize(1000,1000);
@@ -14,12 +14,7 @@ public class Window{
         myFrame.setVisible(true);
 
         while(true){
-            System.out.println(simulation.getTimeLeft());
-            simulation.reduceTime();
-            simulation.repaint();
-            Thread.sleep(1000);
-
-            if(simulation.getTimeLeft() == 2 && simulation.getCurrentEnabledLight() == "green"){
+            if(simulation.getTimeLeft() == 3 && simulation.getCurrentEnabledLight() == "green"){
                 simulation.setLightOff("green");
                 simulation.setLightOn("yellow");
             }
@@ -31,9 +26,11 @@ public class Window{
             else if(simulation.getTimeLeft() == -1 && simulation.getCurrentEnabledLight() == "red"){
                 simulation.setLightOff("red");
                 simulation.setLightOn("green");
-                Thread.sleep(500);
                 simulation.setTimeLeft(20);
             }
+
+            simulation.repaint();
+            Thread.sleep(1000);
         }
     }
 }
