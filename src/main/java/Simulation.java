@@ -9,52 +9,51 @@ public class Simulation extends JPanel {
     private boolean redLight_enabled = false;
     private boolean yellowLight_enabled = false;
     private boolean greenLight_enabled = true;
+    private boolean crossStreet = true;
 
-    public void reduceTime(){
+    public void reduceTime() {
         timeLeft--;
     }
 
-    public int getTimeLeft(){
+    public int getTimeLeft() {
         return timeLeft;
     }
 
-    public void setTimeLeft(int time){
+    public void setTimeLeft(int time) {
         timeLeft = time;
     }
 
-    public void setLightOn(String lightColor){
-        if(lightColor == "green"){
+    public void setCrossStreet(boolean canCrossStreet) {
+        crossStreet = canCrossStreet;
+    }
+
+    public void setLightOn(String lightColor) {
+        if (lightColor == "green") {
             greenLight_enabled = true;
-        }
-        else if(lightColor == "yellow"){
+        } else if (lightColor == "yellow") {
             yellowLight_enabled = true;
-        }
-        else{
+        } else {
             redLight_enabled = true;
         }
     }
 
-    public void setLightOff(String lightColor){
-        if(lightColor == "green"){
+    public void setLightOff(String lightColor) {
+        if (lightColor == "green") {
             greenLight_enabled = false;
-        }
-        else if(lightColor == "yellow"){
+        } else if (lightColor == "yellow") {
             yellowLight_enabled = false;
-        }
-        else{
+        } else {
             redLight_enabled = false;
         }
     }
 
-    public String getCurrentEnabledLight(){
+    public String getCurrentEnabledLight() {
         String enabledLight = "";
-        if(greenLight_enabled){
+        if (greenLight_enabled) {
             enabledLight = "green";
-        }
-        else if(yellowLight_enabled){
+        } else if (yellowLight_enabled) {
             enabledLight = "yellow";
-        }
-        else{
+        } else {
             enabledLight = "red";
         }
         return enabledLight;
@@ -62,7 +61,6 @@ public class Simulation extends JPanel {
 
     @Override
     public void paint(Graphics graphic) {
-        System.out.println(timeLeft + "time left2s");
         super.paint(graphic);
         Graphics2D graphic2d = (Graphics2D) graphic;
         graphic2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -73,22 +71,20 @@ public class Simulation extends JPanel {
         reduceTime();
     }
 
-    private void drawActiveLight(Graphics2D graphic){
-        if(getCurrentEnabledLight() == "green"){
+    private void drawActiveLight(Graphics2D graphic) {
+        if (getCurrentEnabledLight() == "green") {
             graphic.setColor(Color.green);
             graphic.fillOval(175, 550, 150, 150);
-        }
-        else if(getCurrentEnabledLight() == "yellow"){
+        } else if (getCurrentEnabledLight() == "yellow") {
             graphic.setColor(Color.yellow);
             graphic.fillOval(175, 325, 150, 150);
-        }
-        else if(getCurrentEnabledLight() == "red"){
+        } else if (getCurrentEnabledLight() == "red") {
             graphic.setColor(Color.red);
             graphic.fillOval(175, 100, 150, 150);
         }
     }
 
-    private void drawTrafficLight(Graphics2D graphic){
+    private void drawTrafficLight(Graphics2D graphic) {
         graphic.setColor(new Color(231, 180, 22));
         //color in traffic light
         graphic.fillRect(50, 50, 400, 700);
@@ -102,7 +98,7 @@ public class Simulation extends JPanel {
         graphic.fillOval(175, 550, 150, 150);
     }
 
-    private void drawCrossingTrafficLight(Graphics2D graphic){
+    private void drawCrossingTrafficLight(Graphics2D graphic) {
         //traffic light for walking (crossing the street)
         graphic.fillRect(500, 50, 400, 700);
 
@@ -111,34 +107,39 @@ public class Simulation extends JPanel {
         graphic.fillRect(575, 110, 250, 250);
         //timer
         graphic.fillRect(575, 440, 250, 250);
-        //drawPedestrianLightSignal(graphic);
+        drawPedestrianLightSignal(graphic);
         drawTimeLeft(graphic);
     }
 
-    private void drawTimeLeft(Graphics2D graphic){
+    private void drawTimeLeft(Graphics2D graphic) {
         int xcoordinate = 610;
         int ycoordinate = 610;
 
         graphic.setColor(Color.red);
         graphic.setFont(new Font("TimesRoman", Font.PLAIN, 150));
 
-        if(timeBelowTenSeconds()){
+        if (timeBelowTenSeconds()) {
             xcoordinate = 695;
         }
 
-        System.out.println(timeLeft + "time left");
-        graphic.drawString(timeLeft + "",xcoordinate, ycoordinate);
+        graphic.drawString(timeLeft + "", xcoordinate, ycoordinate);
     }
 
-    private boolean timeBelowTenSeconds(){
+    private boolean timeBelowTenSeconds() {
         return (timeLeft - 10 < 0);
     }
 
-    private void drawPedestrianLightSignal(Graphics2D graphic){
-        ImageIcon icon = new ImageIcon(this.getClass()
-                .getResource("../images/walkingGuy.png"));
-        int x = 100;
-        int y = 100;
-        icon.paintIcon(this, graphic, x, y);
+    private void drawPedestrianLightSignal(Graphics2D graphic) {
+        if (crossStreet) {
+            ImageIcon icon = new ImageIcon(this.getClass()
+                    .getResource("../images/walkingGuy.png"));
+            icon.paintIcon(this, graphic, 603, 133);
+        }
+        else{
+            ImageIcon icon = new ImageIcon(this.getClass()
+                .getResource("../images/handStop.png"));
+            icon.paintIcon(this, graphic, 575, 110);
+        }
     }
+
 }

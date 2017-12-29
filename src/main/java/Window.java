@@ -1,6 +1,4 @@
-package main.java; /**
- * Created by Stefan on 2017-12-20.
- */
+package main.java;
 import javax.swing.*;
 
 public class Window{
@@ -18,6 +16,9 @@ public class Window{
                 simulation.setLightOff("green");
                 simulation.setLightOn("yellow");
             }
+            else if(simulation.getTimeLeft() == 5 && simulation.getCurrentEnabledLight() == "green"){
+                simulation.setCrossStreet(false);
+            }
             else if(simulation.getTimeLeft() == -1 && simulation.getCurrentEnabledLight() == "yellow"){
                 simulation.setLightOff("yellow");
                 simulation.setLightOn("red");
@@ -26,6 +27,7 @@ public class Window{
             else if(simulation.getTimeLeft() == -1 && simulation.getCurrentEnabledLight() == "red"){
                 simulation.setLightOff("red");
                 simulation.setLightOn("green");
+                simulation.setCrossStreet(true);
                 simulation.setTimeLeft(20);
             }
 
